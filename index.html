@@ -79,7 +79,7 @@ iframe{height: 200px !important;}
 	
 	<div class="tip" style="margin: 10px 0px;">
 	<template>
-      <el-alert title="选择解析线路，输入视频链接，点击解析播放；如果不能正常播放，可以切换解析线路。部分手机线路播放视频可能自带广告，请勿相信！" type="success" center="" show-icon="">
+      <el-alert title="选择解析线路，输入视频链接，点击解析播放；如果不能正常播放，更换浏览器或者 可以切换解析线路。部分手机线路播放视频可能自带广告，请勿相信！" type="success" center="" show-icon="">
       </el-alert>
 	 </template>
 	 </div>
@@ -125,28 +125,57 @@ new Vue({
 		reward: false,
         centerDialogVisible: false,
         options: [{
-          value: 'http://jx2.zhiaiyy.top/?url=',
-          label: '推荐线路'
+          value: 'https://api.jiexi.la/?url=',
+          label: '超清线路①'
         }, 
 		{
-          value: 'https://91jxs.com/jiexi/?url=',
-          label: '推荐线路1'
+          value: 'http://api.ap2p.cn/?url=',
+          label: '超清线路②'
         }, 
 		{
           value: 'https://8090.la/api/?url=',
-          label: '推荐线路2'
+          label: '超清线路③'
         }, 
 		{
           value: 'https://www.pangujiexi.cc/jiexi.php?url=',
-          label: '推荐线路3'
+          label: '超清线路④'
+        }, 
+		{
+          value: 'http://jx2.zhiaiyy.top/?url=',
+          label: '超清线路⑤'
+        }, 
+		{
+          value: 'http://okjx.cc/?url=',
+          label: '超清线路⑥'
+        }, 
+		{
+          value: 'https://www.1717yun.com/jx/ty.php?url=',
+          label: '超清线路⑦'
+        }, 
+		{
+          value: 'http://www.wmxz.wang/video.php?url=',
+          label: '超清线路⑧'
+        }, 
+		{
+          value: 'https://z1.m1907.cn/?jx=',
+          label: '超清线路⑨'
+        }, 
+		{
+          value: 'https://123.1dior.cn/?url=',
+          label: '超清线路⑩'
+        }, 
+		{
+          value: 'https://vip.bljiex.com/?v=',
+          label: '备用超清线路①'
         }, 
 		{
           value: 'https://www.ckplayer.vip/jiexi/?url=',
-          label: '备用线路'
+          label: '备用超清线路②'
         }],
-        value: 'https://api.jiexi.la/?url='
+		  value: 'https://api.jiexi.la/?url=',
       }
     },
+
 	mounted() {
        console.log(this.value);
     },
