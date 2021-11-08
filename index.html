@@ -1,125 +1,171 @@
-<html>
-<head>
-  <SCRIPT LANGUAGE="JavaScript">
-        <!--
-        function onload(){
+<!doctype html>
+<!DOCTYPE html><html><head><meta charset="utf-8">
 
-        }
-        function fnChange(){
-        }
-        function onClear(){
-                document.getElementById("vipurl").value="";
-        }
-        function onPlay(){
-                var oJK = document.getElementById("jk");
-                var sJK=oJK.options[oJK.selectedIndex].value;
-                var sVipUrl = document.getElementById("vipurl").value;
-                var oWin = document.getElementById("play");
-                if (sVipUrl.length>0){
-                        oWin.src=sJK + sVipUrl;
-                }
-        }
 
-  </SCRIPT>
-  <title>    免费VIP播放器网页版    </title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+<title>热门解析-优酷/爱奇艺/腾讯视频解析在线播放</title>
+<meta name="keywords" content="免费视频会员,免费优酷会员,免费爱奇艺会员,免费腾讯视频会员,会员账号共享,视频解析,视频在线解析,优酷解析,爱奇艺解析,腾讯视频解析,优酷VIP解析,爱奇艺VIP解析,腾讯视频VIP解析,超前点播">
+<meta name="description" content="优酷、爱奇艺、腾讯视频、哔哩哔哩、芒果TV和搜狐视频等全网最新电视剧、电影和综艺节目高清播放，在线观看所有视频。">
+
+<!--浏览器ICO-->
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="bookmark" href="favicon.ico">
+
+<!-- 引入样式 -->
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<!-- 引入组件库 -->
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+
+<style>
+#app{font-family: "Microsoft YaHei"}
+
+@media screen and (max-width: 768px){
+#app{margin-left: 5px !important; margin-right: 5px !important;}
+#wap{display: none;}
+iframe{height: 200px !important;}
+.el-select{width: 100% !important;}
+.el-input{width: 100% !important; margin-top: 10px;}
+.el-button{width: 100% !important; margin-top: 10px;}
+}
+</style>
+
 </head>
-<body onload="onload()" bgcolor=#000000>
-<table  width="100%" align="center" height="100%" border="0" cellpadding="0" cellspacing="0">
-<tr>
-        <td height="9">
-                <form method="post" action="">
-                <select name="jk" id="jk" size=1 onchange="fnChange()">
-                        <option value="http://api.baiyug.cn/vip/index.php?url=" selected>超清</option>
+<body>
 
-                        <option value="http://www.vipjiexi.com/yun.php?url=" selected>线路1</option>
+<div id="app" style="margin-left: 150px; margin-right: 150px; margin-bottom: 25px;">
+<el-backtop></el-backtop>
+<div class="header" style="margin: 5px 0;">
+<a href="/v"><el-image style="width: 120px;" src="images/logo.png"></el-image></a>
 
-                        <option value="http://api.1008net.com/v.php?url=" selected>线路2</option>
+</div>
+<div style="margin: 5px 0; height: 1px; background-color: #f0f0f0;"></div>
 
-                        <option value="http://api.nepian.com/ckparse/?url=" selected>线路3</option>
+<div class="tip" style="margin: 10px auto;">
+	<template>
+      <el-alert title="本站不提供、不存储、不传播任何视频资源，一切资源来源于互联网开源接口，仅供测试和学习交流，如有违规请联系我们" type="error" center="" :closable="false">
+      </el-alert>
+	 </template>
+</div>
+	 
+<div class="main" style="margin: 10px 0;">
 
-                        <option value="http://player.jidiaose.com/supapi/iframe.php?v=" selected>线路4</option>
+     <iframe id="playbox" style="background-color: #ecf5ff; width:100%; height: 425px; border-radius: 5px;" allowtransparency="true" allowfullscreen="true" frameborder="0" scrolling="no">
+	 </iframe>
 
-                        <option value="http://api.pucms.com/index.php?url=" selected>线路5</option>
+	<div class="jx" style="margin: 10px 0px;">
+    <template>
+    <el-select style="width: 15%;" v-model="value" placeholder="选择解析线路">
+    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+    </el-option>
+    </el-select>
+    </template>
 
-                        <option value="http://api.wlzhan.com/sudu/?url=" selected>线路6</option>
+	<el-input style="width: 60%;" prefix-icon="el-icon-paperclip" placeholder="输入视频链接，点击解析播放，支持优酷、爱奇艺和腾讯视频等平台测试" v-model="input" clearable="" id="url">
+    </el-input>
+    
+	<el-button style="width: 11%;" type="primary" @click="play">解析播放</el-button>
+	
+    <el-button id="wap" style="width: 11%; float: right;" type="warning" @click="centerDialogVisible = true">手机播放</el-button>
+	    <el-dialog title="手机扫码观看" :visible.sync="centerDialogVisible" width="20%" center="">
+        <span><el-image src="images/sj.png"></el-image></span>
+		<span slot="footer" class="dialog-footer">
+           <el-button type="warning" @click="centerDialogVisible = false">关 闭</el-button>
+        </span>
+        </el-dialog>
+	</div>
+	
+	<div class="tip" style="margin: 10px 0px;">
+	<template>
+      <el-alert title="选择解析线路，输入视频链接，点击解析播放；如果不能正常播放，可以切换解析线路。部分手机线路播放视频可能自带广告，请勿相信！" type="success" center="" show-icon="">
+      </el-alert>
+	 </template>
+	 </div>
+	 
+	
+	
+	<div class="tvlogo" style="margin: 20px 0px; text-align: center">
+	<p style="margin-bottom:10px; color:#555555; font-size:16px;">支持平台</p>
+		<el-image style="width:85px; margin: 8px;" src="images/youku.png"></el-image>
+		<el-image style="width:85px; margin: 8px;" src="images/iqiyi.png"></el-image>
+		<el-image style="width:85px; margin: 8px;" src="images/vqq.png"></el-image>
+		<el-image style="width:85px; margin: 8px;" src="images/bilibili.png"></el-image>
+		<el-image style="width:85px; margin: 8px;" src="images/mgtv.png"></el-image>
+		<el-image style="width:85px; margin: 8px;" src="images/pptv.png"></el-image>
+		<el-image style="width:85px; margin: 8px;" src="images/le.png"></el-image>
+		<el-image style="width:85px; margin: 8px;" src="images/sohu.png"></el-image>
+        <el-image style="width:85px; margin: 8px;" src="images/kankan.png"></el-image>
+	</div>
 
-                        <option value="http://www.0335haibo.com/yun.php?url=" selected>线路7</option>
+</div>
+</div>
 
-                        <option value="http://yun.mt2t.com/yun?url=" selected>线路8</option>
 
-                        <option value="http://y.mt2t.com/lines?url=" selected>线路9</option>
+<!--网站统计-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?94f612415ce86a4df7206785efb52133";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 
-                        <option value="http://www.0335haibo.com/yun.php?url=" selected>线路10</option>
 
-                        <option value="http://www.sfsft.com/video.php?url=" selected>线路11</option>
 
-                        <option value="http://www.82190555.com/video.php?url=" selected>线路12</option>
 
-                        <option value="http://2.jx.72du.com/video.php?url=" selected>线路13</option>
+<script>
+new Vue({
+    data() {
+      return {
+	    input: '',
+		reward: false,
+        centerDialogVisible: false,
+        options: [{
+          value: 'https://api.jiexi.la/?url=',
+          label: '推荐线路'
+        }, 
+		{
+          value: 'https://91jxs.com/jiexi/?url=',
+          label: '开源线路1'
+        }, 
+		{
+          value: 'https://8090.la/api/?url=',
+          label: '开源线路2'
+        }, 
+		{
+          value: 'https://www.pangujiexi.cc/jiexi.php?url=',
+          label: '开源线路3'
+        }, 
+		{
+          value: 'https://www.ckplayer.vip/jiexi/?url=',
+          label: '备用线路'
+        }],
+        value: 'https://api.jiexi.la/?url='
+      }
+    },
+	mounted() {
+       console.log(this.value);
+    },
+	methods: {
+      play() {
+	  var urlv = document.getElementById("url").value;
+	    if(urlv == "") {
+          this.$message.error({
+          message: '视频链接不能为空，否则无法解析播放',
+          center: true
+        });
+		}
+		else {
+			playbox.src=this.value + urlv;
+	    }
+      }
+    },
+}).$mount('#app')
+</script>
 
-                        <option value="http://www.97panda.com/kkflv/index.php?url=" selected>线路14</option>
 
-                        <option value="http://jx.vgoodapi.com/jx.php?url=" selected>线路15</option>
-
-                        <option value="http://www.dgua.xyz/webcloud/?url=" selected>线路16</option>
-
-                        <option value="http://api.91exp.com/svip/?url=" selected>线路17</option>
-
-                        <option value="http://vip.jlsprh.com/index.php?url=" selected>线路18</option>
-
-                        <option value="http://api.xfsub.com/index.php?url=" selected>线路19</option>
-
-                        <option value="http://jiexi.071811.cc/jx.php?url=" selected>线路20</option>
-
-                        <option value="http://jiexi.92fz.cn/player/vip.php?url=" selected>线路21</option>
-
-                        <option value="http://api.baiyug.cn/vip/index.php?url=" selected>线路22</option>
-
-                        <option value="http://api.662820.com/xnflv/index.php?url=" selected>线路23</option>
-
-                        <option value="http://www.82190555.com/index/qqvod.php?url=" selected>线路24</option>
-                        <option value="http://yyygwz.com/index.php?url=" selected>线路25</option>
-
-                        <option value="http://www.97panda.com/kkflv/index.php?url=" selected>线路26</option>
-
-                        <option value="http://jx.api.163ren.com/vod.php?url=" selected>线路27</option>
-
-                        <option value="http://lookxw.com/yingzi/?url=" selected>线路28</option>
-
-                        <option value="http://www.0335haibo.com/tong.php?url=" selected>线路29</option>
-
-                        <option value="http://www.wmxz.wang/video.php?url=" selected>线路30</option>
-
-                        <option value="http://api.97kn.com/?url=" selected>线路31</option>
-
-                        <option value="https://aikanapi.duapp.com/odflv105/index.php?url=" selected>线路32</option>
-                        <option value="http://v.buy360.vip/wwcx/index.php?url=" selected>线路33</option>
-                        <option value="http://api.lequgirl.com/?url=" selected>线路34</option>
-                        <option value="https://jxapi.nepian.com/ckparse/?url=" selected>线路35</option>
-                        <option value="http://91k.co/play.php?url=" selected>线路36</option>
-                        <option value="http://www.52jiexi.com/yun.php?url=" selected>线路37</option>
-                        <option value="http://mt2t.com/yun?url=">线路38</option>
-                        <option value="http://000o.cc/jx/ty.php?url=">线路39</option>
-                        <option value="http://yyygwz.com/index.php?url=">线路40</option>
-                        <option value="http://vipjiexi.com/vip.php?url=">线路41</option>
-                        <option value="http://www.wmxz.wang/video.php?url=">线路42</option>
-                        <option value="http://jx.ck921.com/?url=">线路43</option>
-                        <option value="http://s1y2.com/?url=">线路44</option>
-                        <option value="http://www.ou522.cn/t2/1.php?url=">线路45</option>
-                        <option value="http://jx.xuanpianwang.com/parse?url=">线路46</option>
-                        <option value="https://apiv.ga/magnet/">线路47</option>
-	    <option value="http://jiexi.92fz.cn/player/vip.php?url=">线路48</option>
-                </select>
-                <input type="text" name="vipurl" id="vipurl" size=88 value="http://v.youku.com/v_show/id_XMzA4MjMyOTA1Ng==.html">
-                <input type="button" value="播放" onclick="onPlay()">
-                <input type="button" value="清除" onclick="onClear()">
-                <textarea rows="1" cols="80" readonly>把需要播放的VIP视频链接粘贴到左侧的输入框中，然后点击播放即可(尽量使用靠前的线路) </textarea>
-         </form>
-        </td>
-</tr>
-<tr>
-        <td><iframe src="" name="play" id="play" width="100%" align="center" height="100%" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"></iframe></td>
-</tr>
-</table>
-</body>
-</html>
+</body></html>
